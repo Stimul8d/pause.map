@@ -5,48 +5,106 @@ Mapping global change through COVID: track how events, sentiment, health and eco
 ## Why this matters
 Shows how a global event rippled through media, sentiment and economics. Built to highlight the connections between reporting, public mood and economic reality during an unprecedented pause in normal life.
 
-## What it shows
-- Global media sentiment during lockdown
-- Event patterns and social shifts
-- Economic ripple effects
-- Health metrics
+## Data Sources
 
-## Tech
-Two key bits:
-1. Python data pipeline
-   - Grabs GDELT, OWID and World Bank data
-   - Processes into weekly summaries
-   - Outputs clean JSON for frontend
-2. Next.js frontend
-   - D3 for visualisations
-   - Shows how events rippled globally
-   - Links health, economic and social impact
+Three key datasets tell the story:
 
-## Quick start
-```bash
-make setup   # First time setup
-make dev     # Run development environment
-```
+1. **GDELT** (Global Database of Events, Language and Tone)
+   - Daily global events and sentiment
+   - Media coverage patterns
+   - Social response tracking
 
-## Structure
+2. **Our World in Data (OWID)**
+   - COVID-19 case data
+   - Testing and vaccination stats
+   - Country response measures
+
+3. **World Bank**
+   - Economic indicators (GDP, trade, employment)
+   - Research reports and analysis
+   - Country-specific impact studies
+
+## Project Structure
 ```
 pause.map/
-  /data           # Python data pipeline
-    /src          # Source code
-    /tests        # Test suite
-    /output       # Generated JSONs
-  /site          # Next.js frontend
+├── data/              # Python data pipeline
+│   ├── src/          # Source code
+│   │   └── pausemap/ 
+│   │       ├── sources/  # Data source handlers
+│   │       └── cli.py    # Command line interface
+│   └── storage/      # Data storage
+│       ├── raw/      # Raw API data
+│       ├── processed/# Cleaned data
+│       └── samples/  # Sample data
+└── site/             # Next.js frontend (WIP)
 ```
 
-## Contributing
-PR for data improvements welcome. Insight suggestions even better.
+## Current Status
 
-## Data limitations
-- GDELT gives us volume and sentiment, not accuracy
-- World Bank economic data lags by ~3 months
-- Some regions have patchy coverage
+- ✅ Working data pipeline for all three sources
+- ✅ Sample data generation
+- ✅ Full data fetch for April 2020 (initial analysis)
+- 🚧 Data processing and analysis
+- 🚧 Frontend visualization  
 
-## Local setup needs
+## Getting Started
+
+1. Set up Python environment:
+```bash
+cd data
+python -m venv venv
+source venv/bin/activate
+pip install -e ".[test]"
+```
+
+2. Try the data pipeline:
+```bash
+# Get sample data
+python -m pausemap.cli sample --source gdelt
+python -m pausemap.cli sample --source owid
+python -m pausemap.cli sample --source worldbank
+
+# Fetch full data
+python -m pausemap.cli fetch --source gdelt
+python -m pausemap.cli fetch --source owid
+python -m pausemap.cli fetch --source worldbank
+```
+
+## Tech Stack
+
+- **Data Pipeline**: 
+  - Python 3.10+
+  - polars for fast data processing
+  - Public APIs (no auth needed)
+  - Type hints throughout
+
+- **Frontend** (Work in Progress):
+  - Next.js
+  - D3 for visualization
+
+## Local Requirements
+
 - Python 3.10+
-- Node 18+
+- Node 18+ (for frontend)
 - ~2GB storage for data
+- Git LFS (for any large data files)
+
+## Contributing
+
+PRs welcome for:
+- Data pipeline improvements
+- New analysis approaches
+- Frontend visualization ideas
+
+## Data Limitations
+
+- GDELT provides volume and sentiment, but not fact-checking
+- World Bank economic data has natural reporting lag
+- Some regions have inconsistent coverage
+- API reliability can vary
+
+## Notes
+
+- All API responses are cached locally
+- Raw data storage is gitignored
+- Date range configured in config.py

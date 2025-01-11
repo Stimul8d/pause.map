@@ -17,3 +17,8 @@ out/
 
 # Project specific
 data/output/*.json
+
+# Data storage
+data/storage/raw/
+data/storage/samples/
+data/storage/processed/

@@ -1,11 +1,11 @@
 import pytest
 from pausemap.sources.gdelt import GDELTSource
 
-def test_gdelt_weekly_processing(mocker):
-    # We'll just assert we can get data without BigQuery for now
+def test_gdelt_weekly_processing():
     gdelt = GDELTSource()
-    result = gdelt.get_mock_data('2020-01-01', '2020-12-31')
+    # Using mock data for tests
+    df = gdelt.get_weekly_data('2020-01-01', '2020-12-31') 
     
-    assert len(result) > 0
-    assert 'week' in result.columns
-    assert 'event_count' in result.columns
+    assert len(df) > 0
+    assert 'week' in df.columns
+    assert 'event_count' in df.columns
